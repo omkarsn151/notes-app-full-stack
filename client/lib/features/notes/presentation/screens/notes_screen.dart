@@ -2,6 +2,7 @@ import 'package:client/features/notes/bloc/notes_bloc.dart';
 import 'package:client/features/notes/bloc/notes_event.dart';
 import 'package:client/features/notes/bloc/notes_state.dart';
 import 'package:client/features/notes/presentation/widgets/add_note_dialog.dart';
+import 'package:client/features/notes/presentation/widgets/delete_note_dialog.dart';
 import 'package:client/features/notes/presentation/widgets/edit_note_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,13 @@ class NotesScreen extends StatelessWidget {
                     return ListTile(
                       title: Text(note.title),
                       subtitle: Text(note.content),
-                      trailing: IconButton(onPressed: (){editNoteDialog(context,note.id, note.title, note.content);}, icon: Icon(Icons.edit_rounded)),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(onPressed: (){editNoteDialog(context,note.id, note.title, note.content);}, icon: Icon(Icons.edit_rounded)),
+                          IconButton(onPressed: (){showDeleteConfirmationDialog(context, note.id);}, icon: Icon(Icons.delete_rounded))
+                        ],
+                      ),
                     );
                   },
                 ),
