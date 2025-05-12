@@ -1,4 +1,4 @@
-import 'package:client/core/features/notes/data/notes_model.dart';
+import 'package:client/features/notes/data/notes_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class NotesState extends Equatable {

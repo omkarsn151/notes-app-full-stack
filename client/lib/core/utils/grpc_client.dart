@@ -17,7 +17,7 @@ class GrpcClient {
       IP,
       port: PORT,
       options: const ChannelOptions(
-        credentials: ChannelCredentials.secure(), 
+        credentials: ChannelCredentials.insecure(), 
       ),
     );
 

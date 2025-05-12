@@ -1,7 +1,7 @@
-import 'package:client/core/features/notes/bloc/notes_event.dart';
-import 'package:client/core/features/notes/bloc/notes_state.dart';
-import 'package:client/core/features/notes/data/notes_model.dart';
-import 'package:client/core/features/notes/repository/notes_repository.dart';
+import 'package:client/features/notes/bloc/notes_event.dart';
+import 'package:client/features/notes/bloc/notes_state.dart';
+import 'package:client/features/notes/data/notes_model.dart';
+import 'package:client/features/notes/repository/notes_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
