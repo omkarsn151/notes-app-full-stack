@@ -1,6 +1,7 @@
 import 'package:client/features/notes/bloc/notes_bloc.dart';
 import 'package:client/features/notes/bloc/notes_event.dart';
 import 'package:client/features/notes/bloc/notes_state.dart';
+import 'package:client/features/notes/data/notes_model.dart';
 import 'package:client/features/notes/presentation/widgets/add_note_dialog.dart';
 import 'package:client/features/notes/presentation/widgets/delete_note_dialog.dart';
 import 'package:client/features/notes/presentation/widgets/edit_note_dialog.dart';
@@ -32,15 +33,10 @@ class NotesScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final note = notes[index];
                     return ListTile(
+                      onTap: () => showSelectedNoteDialog(context, note),
                       title: Text(note.title),
-                      subtitle: Text(note.content),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(onPressed: (){editNoteDialog(context,note.id, note.title, note.content);}, icon: Icon(Icons.edit_rounded)),
-                          IconButton(onPressed: (){showDeleteConfirmationDialog(context, note.id);}, icon: Icon(Icons.delete_rounded))
-                        ],
-                      ),
+                      subtitle: Text(note.content, maxLines: 2, overflow: TextOverflow.ellipsis,),
+                      trailing: IconButton(onPressed: (){showDeleteConfirmationDialog(context, note.id);}, icon: Icon(Icons.delete_rounded)),
                     );
                   },
                 ),
@@ -59,4 +55,33 @@ class NotesScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future showSelectedNoteDialog(BuildContext context, NotesModel note){
+  return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(note.title),
+                IconButton(onPressed: ()=> editNoteDialog(context, note.id, note.title, note.content), icon: Icon(Icons.edit_note_rounded))
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: Text(note.content),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Close'),
+              ),
+              TextButton(
+                onPressed: () => showDeleteConfirmationDialog(context, note.id),
+                child: Text('Delete'),
+              ),
+              
+            ],
+          ),
+        );
 }
