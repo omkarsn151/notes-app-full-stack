@@ -44,7 +44,7 @@ mixin NotesSelectionHelper<T extends StatefulWidget> on State<T> {
           ),
           content: CustomText(
             text:
-                "Are you sure you want to delete this note?\nThis action cannot be undone.",
+                "Are you sure you want to delete the selected notes?\nThis action cannot be undone.",
           ),
           actions: [
             TextButton(

@@ -5,5 +5,5 @@ class AppColors {
   static const Color textColor = Colors.white;
   static const Color subTextColor = Colors.grey;
   static const Color saveButtonColor = Colors.amber;
-  static Color errorColor = Colors.red.shade100;
+  static Color errorColor = Colors.red.shade500;
 }
