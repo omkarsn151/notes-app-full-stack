@@ -13,14 +13,14 @@ void showDeleteConfirmationDialog(BuildContext context, String noteId) {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
+              Navigator.of(context).pop(); 
             },
             child: Text("Cancel"),
           ),
           ElevatedButton(
             onPressed: () {
               context.read<NotesBloc>().add(DeleteNote(id: noteId));
-              Navigator.of(context).pop(); // Close the dialog
+              Navigator.of(context).pop(); 
             },
             child: Text("Delete"),
           ),
