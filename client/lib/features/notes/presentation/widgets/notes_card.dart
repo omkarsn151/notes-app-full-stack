@@ -1,3 +1,5 @@
+import 'package:client/common/app_colors.dart';
+import 'package:client/common/custom_text.dart';
 import 'package:client/features/notes/data/notes_model.dart';
 import 'package:flutter/material.dart';
 
@@ -22,14 +24,14 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: isSelected ? 2 : 1,
-      color: isSelected ? Colors.blue[50] : Colors.white,
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      color: AppColors.bgColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side:
             isSelected
-                ? BorderSide(color: Theme.of(context).primaryColor, width: 2)
-                : BorderSide.none,
+                ? BorderSide(color: AppColors.saveButtonColor, width: 2)
+                : BorderSide(color: AppColors.textColor, width: 1),
       ),
       child: InkWell(
         onTap: onTap,
@@ -43,13 +45,10 @@ class NoteCard extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      note.title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
+                    child: CustomText(
+                      text: note.title,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -59,27 +58,22 @@ class NoteCard extends StatelessWidget {
                       isSelected ? Icons.check_circle : Icons.circle_outlined,
                       color:
                           isSelected
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey,
+                              ? AppColors.saveButtonColor
+                              : AppColors.subTextColor,
                     )
                   else
                     IconButton(
                       icon: const Icon(Icons.delete_outline, size: 20),
-                      color: Colors.grey[600],
+                      color: AppColors.subTextColor,
                       onPressed: onDelete,
-                      tooltip: 'Delete note',
                     ),
                 ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                note.content,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                  height: 1.4,
-                ),
-                maxLines: 3,
+              CustomText(
+                text: note.content,
+                fontSize: 16,
+                color: AppColors.subTextColor,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ],

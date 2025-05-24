@@ -1,3 +1,5 @@
+import 'package:client/common/app_colors.dart';
+import 'package:client/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class EmptyStateWidget extends StatelessWidget {
@@ -11,21 +13,18 @@ class EmptyStateWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.note_outlined, size: 80, color: Colors.grey[300]),
+            Icon(Icons.note_outlined, size: 80, color: AppColors.subTextColor),
             const SizedBox(height: 24),
-            Text(
-              'No notes yet',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
-              ),
+            CustomText(
+              text: "No notes yet",
+              fontSize: 25,
+              color: AppColors.subTextColor,
             ),
             const SizedBox(height: 8),
-            Text(
-              'Tap the + button to create your first note',
-              style: TextStyle(fontSize: 16, color: Colors.grey[500]),
-              textAlign: TextAlign.center,
+            CustomText(
+              text: "Tap the + button to create your first note",
+              fontSize: 18,
+              color: AppColors.subTextColor,
             ),
           ],
         ),

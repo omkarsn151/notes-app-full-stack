@@ -1,8 +1,7 @@
+import 'package:client/common/app_colors.dart';
+import 'package:client/common/custom_text.dart';
 import 'package:client/features/notes/bloc/notes_bloc.dart';
 import 'package:client/features/notes/bloc/notes_event.dart';
-import 'package:client/features/notes/data/notes_model.dart';
-import 'package:client/features/notes/presentation/widgets/delete_note_dialog.dart';
-import 'package:client/features/notes/presentation/widgets/edit_note_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,21 +36,36 @@ mixin NotesSelectionHelper<T extends StatefulWidget> on State<T> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Delete ${selectedNoteIds.length} notes"),
-          content: const Text(
-            "Are you sure you want to delete the selected notes?",
+          backgroundColor: AppColors.bgColor,
+          title: CustomText(
+            text: "⚠️ Delete ${selectedNoteIds.length} notes",
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+          content: CustomText(
+            text:
+                "Are you sure you want to delete this note?\nThis action cannot be undone.",
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
+              child: const CustomText(
+                text: "Cancel",
+                color: AppColors.textColor,
+              ),
             ),
             TextButton(
               onPressed: () {
                 deleteSelectedNotes();
                 Navigator.pop(context);
               },
-              child: const Text("Delete"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.errorColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: CustomText(text: "Delete", color: AppColors.textColor),
             ),
           ],
         );

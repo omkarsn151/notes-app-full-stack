@@ -1,3 +1,6 @@
+import 'package:client/common/app_colors.dart';
+import 'package:client/common/custom_text.dart';
+import 'package:client/common/custom_textfied.dart';
 import 'package:client/features/notes/bloc/notes_bloc.dart';
 import 'package:client/features/notes/bloc/notes_event.dart';
 import 'package:client/features/notes/data/notes_model.dart';
@@ -57,6 +60,7 @@ class NoteDialog extends StatefulWidget {
 class _NoteDialogState extends State<NoteDialog> {
   late final TextEditingController _titleController;
   late final TextEditingController _contentController;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -77,77 +81,61 @@ class _NoteDialogState extends State<NoteDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: AppColors.bgColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: Text(
-        widget.title,
-        style: const TextStyle(fontWeight: FontWeight.w600),
+      title: CustomText(
+        text: widget.title,
+        fontWeight: FontWeight.w500,
+        fontSize: 25,
       ),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(
-                labelText: 'Title',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                filled: true,
-                fillColor: Colors.grey[50],
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomTextField(
+                controller: _titleController,
+                labelText: "Title",
+                hintText: "Title",
               ),
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _contentController,
-              decoration: InputDecoration(
-                labelText: 'Content',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                filled: true,
-                fillColor: Colors.grey[50],
-                alignLabelWithHint: true,
+              const SizedBox(height: 16),
+              CustomTextField(
+                controller: _contentController,
+                labelText: "Content",
+                hintText: "Content",
+                minLines: 5,
               ),
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.grey[600])),
+          child: CustomText(text: "Cancel"),
         ),
         ElevatedButton(
           onPressed: _saveNote,
           style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.saveButtonColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: const Text('Save'),
+          child: const CustomText(text: "Save", color: AppColors.bgColor),
         ),
       ],
     );
   }
 
   void _saveNote() {
-    final title = _titleController.text.trim();
-    final content = _contentController.text.trim();
-
-    if (title.isEmpty || content.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in both title and content'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+    if (!_formKey.currentState!.validate()) {
+      // If form is not valid, do not proceed
       return;
     }
+    final title = _titleController.text.trim();
+    final content = _contentController.text.trim();
 
     widget.onSave(title, content);
     Navigator.pop(context);

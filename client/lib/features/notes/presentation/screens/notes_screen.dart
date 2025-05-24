@@ -1,3 +1,5 @@
+import 'package:client/common/app_colors.dart';
+import 'package:client/common/custom_text.dart';
 import 'package:client/features/notes/bloc/notes_bloc.dart';
 import 'package:client/features/notes/bloc/notes_event.dart';
 import 'package:client/features/notes/bloc/notes_state.dart';
@@ -23,6 +25,7 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.bgColor,
       appBar: _buildAppBar(),
       body: BlocBuilder<NotesBloc, NotesState>(
         builder: (context, state) {
@@ -33,32 +36,7 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
             if (notes.isEmpty) {
               return const EmptyStateWidget();
             } else {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  context.read<NotesBloc>().add(LoadNotes());
-                },
-                child: ListView.builder(
-                  itemCount: notes.length,
-                  itemBuilder: (context, index) {
-                    final note = notes[index];
-                    return NoteCard(
-                      note: note,
-                      isSelected: selectedNoteIds.contains(note.id),
-                      onTap: () {
-                        if (selectedNoteIds.isNotEmpty) {
-                          toggleSelection(note.id);
-                        } else {
-                          _showNoteDetailsDialog(note);
-                        }
-                      },
-                      onLongPress: () => toggleSelection(note.id),
-                      onDelete:
-                          () => showDeleteConfirmationDialog(context, note.id),
-                      isSelectionMode: selectedNoteIds.isNotEmpty,
-                    );
-                  },
-                ),
-              );
+              return _builNotesScreenContent(notes);
             }
           } else if (state is NotesError) {
             return AppErrorWidget(
@@ -74,20 +52,61 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
     );
   }
 
+  Widget _builNotesScreenContent(List<NotesModel> notes) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<NotesBloc>().add(LoadNotes());
+      },
+      child: ListView.builder(
+        itemCount: notes.length,
+        itemBuilder: (context, index) {
+          final note = notes[index];
+          return NoteCard(
+            note: note,
+            isSelected: selectedNoteIds.contains(note.id),
+            onTap: () {
+              if (selectedNoteIds.isNotEmpty) {
+                toggleSelection(note.id);
+              } else {
+                _showNoteDetailsDialog(note);
+              }
+            },
+            onLongPress: () => toggleSelection(note.id),
+            onDelete: () => showDeleteConfirmationDialog(context, note.id),
+            isSelectionMode: selectedNoteIds.isNotEmpty,
+          );
+        },
+      ),
+    );
+  }
+
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
+      backgroundColor: AppColors.bgColor,
       title:
           selectedNoteIds.isEmpty
-              ? const Text("My Notes")
+              ? CustomText(
+                text: "Notes",
+                fontSize: 24,
+                fontWeight: FontWeight.w400,
+              )
               : Row(
                 children: [
                   IconButton(
                     onPressed: clearSelection,
-                    icon: const Icon(Icons.close_rounded),
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      color: AppColors.textColor,
+                    ),
                   ),
-                  Text("${selectedNoteIds.length} selected"),
+                  CustomText(
+                    text: "${selectedNoteIds.length} selected",
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ],
               ),
+      centerTitle: true,
       actions:
           selectedNoteIds.isNotEmpty
               ? [
@@ -95,7 +114,6 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
                   onPressed:
                       () => showMultipleDeleteConfirmationDialog(context),
-                  tooltip: 'Delete selected',
                 ),
                 const SizedBox(width: 8),
               ]
@@ -122,12 +140,11 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
   }
 
   Widget _buildFAB() {
-    return FloatingActionButton.extended(
+    return FloatingActionButton(
       onPressed: () => showAddNoteDialog(context),
-      icon: const Icon(Icons.add_rounded),
-      label: const Text('New Note'),
-      backgroundColor: Theme.of(context).primaryColor,
-      foregroundColor: Colors.white,
+      backgroundColor: AppColors.saveButtonColor,
+      foregroundColor: AppColors.bgColor,
+      child: Icon(Icons.add_rounded),
     );
   }
 

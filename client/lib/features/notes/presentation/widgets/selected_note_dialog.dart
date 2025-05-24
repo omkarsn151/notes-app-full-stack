@@ -1,43 +1,7 @@
+import 'package:client/common/app_colors.dart';
+import 'package:client/common/custom_text.dart';
 import 'package:client/features/notes/data/notes_model.dart';
-import 'package:client/features/notes/presentation/widgets/delete_note_dialog.dart';
-import 'package:client/features/notes/presentation/widgets/edit_note_dialog.dart';
 import 'package:flutter/material.dart';
-
-Future showSelectedNoteDialog(BuildContext context, NotesModel note) {
-  return showDialog(
-    context: context,
-    builder:
-        (context) => AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(note.title),
-              IconButton(
-                onPressed:
-                    () => editNoteDialog(
-                      context,
-                      note.id,
-                      note.title,
-                      note.content,
-                    ),
-                icon: Icon(Icons.edit_note_rounded),
-              ),
-            ],
-          ),
-          content: SingleChildScrollView(child: Text(note.content)),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
-            ),
-            TextButton(
-              onPressed: () => showDeleteConfirmationDialog(context, note.id),
-              child: Text('Delete'),
-            ),
-          ],
-        ),
-  );
-}
 
 class NoteDetailsDialog extends StatelessWidget {
   final NotesModel note;
@@ -54,36 +18,50 @@ class NoteDetailsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: AppColors.bgColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Row(
         children: [
           Expanded(
-            child: Text(
-              note.title,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+            child: CustomText(
+              text: note.title,
+              fontWeight: FontWeight.w500,
+              fontSize: 25,
             ),
           ),
           PopupMenuButton(
-            icon: const Icon(Icons.more_vert),
+            color: AppColors.subTextColor,
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              color: AppColors.textColor,
+            ),
             itemBuilder:
                 (context) => [
                   PopupMenuItem(
                     value: 'edit',
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.edit_outlined),
+                        Icon(Icons.edit_note_rounded),
                         SizedBox(width: 8),
-                        Text('Edit'),
+                        CustomText(
+                          text: "Edit",
+                          fontSize: 18,
+                          color: AppColors.bgColor,
+                        ),
                       ],
                     ),
                   ),
                   PopupMenuItem(
                     value: 'delete',
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.delete_outline, color: Colors.red),
+                        Icon(Icons.delete_outline, color: AppColors.errorColor),
                         SizedBox(width: 8),
-                        Text('Delete', style: TextStyle(color: Colors.red)),
+                        CustomText(
+                          text: "Delete",
+                          color: AppColors.errorColor,
+                          fontSize: 18,
+                        ),
                       ],
                     ),
                   ),
@@ -100,17 +78,12 @@ class NoteDetailsDialog extends StatelessWidget {
       ),
       content: SizedBox(
         width: double.maxFinite,
-        child: SingleChildScrollView(
-          child: Text(
-            note.content,
-            style: const TextStyle(fontSize: 16, height: 1.5),
-          ),
-        ),
+        child: SingleChildScrollView(child: CustomText(text: note.content)),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: const CustomText(text: "Close"),
         ),
       ],
     );

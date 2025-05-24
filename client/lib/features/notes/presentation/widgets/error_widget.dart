@@ -1,3 +1,5 @@
+import 'package:client/common/app_colors.dart';
+import 'package:client/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -14,28 +16,36 @@ class AppErrorWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
+            Icon(Icons.error_outline, size: 64, color: AppColors.subTextColor),
             const SizedBox(height: 16),
-            Text(
-              'Error',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
+            CustomText(
+              text: "Error",
+              color: AppColors.subTextColor,
+              fontSize: 24,
+              fontWeight: FontWeight.w500,
             ),
             const SizedBox(height: 8),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            CustomText(
+              text: message,
+              fontSize: 16,
+              color: AppColors.subTextColor,
             ),
             if (onRetry != null) ...[
               const SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: onRetry,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Try Again'),
+                icon: const Icon(Icons.refresh, color: AppColors.bgColor),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.textColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                label: const CustomText(
+                  text: "Try Again",
+                  fontSize: 18,
+                  color: AppColors.bgColor,
+                ),
               ),
             ],
           ],
