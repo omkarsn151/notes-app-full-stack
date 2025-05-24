@@ -59,39 +59,3 @@ mixin NotesSelectionHelper<T extends StatefulWidget> on State<T> {
     );
   }
 }
-
-Future showSelectedNoteDialog(BuildContext context, NotesModel note) {
-  return showDialog(
-    context: context,
-    builder:
-        (context) => AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(note.title),
-              IconButton(
-                onPressed:
-                    () => editNoteDialog(
-                      context,
-                      note.id,
-                      note.title,
-                      note.content,
-                    ),
-                icon: Icon(Icons.edit_note_rounded),
-              ),
-            ],
-          ),
-          content: SingleChildScrollView(child: Text(note.content)),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
-            ),
-            TextButton(
-              onPressed: () => showDeleteConfirmationDialog(context, note.id),
-              child: Text('Delete'),
-            ),
-          ],
-        ),
-  );
-}
