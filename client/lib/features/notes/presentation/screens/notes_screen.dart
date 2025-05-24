@@ -19,7 +19,14 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(selectedNoteIds.isEmpty ? "Notes" : "${selectedNoteIds.length} selected"),
+        title: selectedNoteIds.isEmpty 
+                ? Text("Notes")
+                : Row(
+                  children: [
+                    IconButton(onPressed: clearSelection, icon: Icon(Icons.close_rounded)),
+                    Text("${selectedNoteIds.length} selected"),
+                  ],
+                ),
         actions: selectedNoteIds.isNotEmpty
             ? [
                 IconButton(
