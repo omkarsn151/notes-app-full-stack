@@ -22,8 +22,8 @@ A cross-platform **Notes App** built with **Flutter**, **Bloc**, **gRPC**, **Nod
 ## 📷 Screenshots
 
 ![image](https://github.com/user-attachments/assets/d15c1fd5-f50e-4a6b-bba0-9d0d19af3b77) ![image](https://github.com/user-attachments/assets/0d5df2ab-4a8d-45b3-9b31-c15c9a731917)
-![image](https://github.com/user-attachments/assets/179c1eb1-8469-4bab-9b81-3a30479a6044) ![image](https://github.com/user-attachments/assets/bc97f8ae-c933-411d-bdbc-4a5fb26a6547)
-![image](https://github.com/user-attachments/assets/805074ef-f8f4-4c52-b485-04b536eca9a1)
+![image](https://github.com/user-attachments/assets/179c1eb1-8469-4bab-9b81-3a30479a6044) ![image](https://github.com/user-attachments/assets/880faf0b-0db3-46fb-9561-d372ac21aa2b) ![image](https://github.com/user-attachments/assets/01a1646f-d3eb-4e49-9edc-13dcceadd27c)
+![image](https://github.com/user-attachments/assets/805074ef-f8f4-4c52-b485-04b536eca9a1) ![image](https://github.com/user-attachments/assets/bc97f8ae-c933-411d-bdbc-4a5fb26a6547)
 
 
 ---
