@@ -24,31 +24,52 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.bgColor,
-      appBar: _buildAppBar(),
-      body: BlocBuilder<NotesBloc, NotesState>(
-        builder: (context, state) {
-          if (state is NotesLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is NotesLoaded) {
-            final notes = state.notes;
-            if (notes.isEmpty) {
-              return const EmptyStateWidget();
+    return BlocListener<NotesBloc, NotesState>(
+      listener: (context, state) {
+        if (state is NoteAdded) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Note added successfully!')),
+          );
+        } else if (state is NoteEdited) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Note edited successfully!')),
+          );
+        } else if (state is NoteDeleted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Note deleted successfully!')),
+          );
+        } else if (state is NotesError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${state.message}')),
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.bgColor,
+        appBar: _buildAppBar(),
+        body: BlocBuilder<NotesBloc, NotesState>(
+          builder: (context, state) {
+            if (state is NotesLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is NotesLoaded) {
+              final notes = state.notes;
+              if (notes.isEmpty) {
+                return const EmptyStateWidget();
+              } else {
+                return _builNotesScreenContent(notes);
+              }
+            } else if (state is NotesError) {
+              return AppErrorWidget(
+                message: state.message,
+                onRetry: _refreshNotes,
+              );
             } else {
-              return _builNotesScreenContent(notes);
+              return Center(child: Text("Error - Something went wrong"));
             }
-          } else if (state is NotesError) {
-            return AppErrorWidget(
-              message: state.message,
-              onRetry: _refreshNotes,
-            );
-          } else {
-            return Center(child: Text("Error - Something went wrong"));
-          }
-        },
+          },
+        ),
+        floatingActionButton: selectedNoteIds.isEmpty ? _buildFAB() : null,
       ),
-      floatingActionButton: selectedNoteIds.isEmpty ? _buildFAB() : null,
     );
   }
 
@@ -136,8 +157,10 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
               showDeleteConfirmationDialog(context, note.id);
             },
             onShare: () {
-              context.read<NotesBloc>().add(ShareNote(title: note.title, content: note.content));
-            }
+              context.read<NotesBloc>().add(
+                ShareNote(title: note.title, content: note.content),
+              );
+            },
           ),
     );
   }

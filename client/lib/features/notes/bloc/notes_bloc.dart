@@ -23,7 +23,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       final notes = grpcNotes.map((note) => NotesModel.fromGrpc(note)).toList();
       emit(NotesLoaded(notes));
     } catch (e) {
-      throw Exception("Failed to load Notes - $e");
+      emit(NotesError("Failed to load Notes - $e"));
     }
   }
 
@@ -31,9 +31,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     emit(NotesLoading());
     try {
       await repository.addNote(event.title, event.content);
+      emit(NoteAdded());
       add(LoadNotes());
     } catch (e) {
-      throw Exception("Failed to add note - $e");
+      emit(NotesError("Failed to add note - $e"));
     }
   }
 
@@ -41,9 +42,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     emit(NotesLoading());
     try {
       await repository.editNote(event.id, event.title!, event.content!);
+      emit(NoteEdited());
       add(LoadNotes());
     } catch (e) {
-      throw Exception("Failed to edit note - $e");
+      emit(NotesError("Failed to edit note - $e"));
     }
   }
 
@@ -51,9 +53,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     emit(NotesLoading());
     try {
       await repository.deleteNote(event.id);
+      emit(NoteDeleted());
       add(LoadNotes());
     } catch (e) {
-      throw Exception("Failed to Delete note - $e");
+      emit(NotesError("Failed to Delete note - $e"));
     }
   }
 
@@ -62,7 +65,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     try {
       await SharePlus.instance.share(ShareParams(text: shareContent));
     } catch (e) {
-      throw Exception("Failed to share note - $e");
+      emit(NotesError("Failed to share note - $e"));
     }
   }
 }

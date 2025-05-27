@@ -14,9 +14,19 @@ void showAddNoteDialog(BuildContext context) {
         (context) => NoteDialog(
           title: 'Add Note',
           onSave: (title, content) {
-            context.read<NotesBloc>().add(
+            try {
+              context.read<NotesBloc>().add(
               AddNote(title: title, content: content),
             );
+            ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Note added successfully!')),
+          );
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error adding note $e')),
+          );
+            }
+            
           },
         ),
   );

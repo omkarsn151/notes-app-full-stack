@@ -18,6 +18,12 @@ class NotesLoaded extends NotesState {
   List<Object?> get props => [notes];
 }
 
+class NoteAdded extends NotesState {}
+
+class NoteEdited extends NotesState {}
+
+class NoteDeleted extends NotesState {}
+
 class NotesError extends NotesState {
   final String message;
   const NotesError(this.message);
