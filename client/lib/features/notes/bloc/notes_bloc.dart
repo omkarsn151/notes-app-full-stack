@@ -3,6 +3,7 @@ import 'package:client/features/notes/bloc/notes_state.dart';
 import 'package:client/features/notes/data/notes_model.dart';
 import 'package:client/features/notes/repository/notes_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
   final NotesRepository repository;
@@ -12,9 +13,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     on<AddNote>(_onAddNote);
     on<EditNote>(_onEditNote);
     on<DeleteNote>(_onDeleteNote);
+    on<ShareNote>(_onShareNote);
   }
 
-  Future<void> _onLoadNotes(LoadNotes event, Emitter<NotesState> emit) async{
+  Future<void> _onLoadNotes(LoadNotes event, Emitter<NotesState> emit) async {
     emit(NotesLoading());
     try {
       final grpcNotes = await repository.getAllNotes();
@@ -25,7 +27,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     }
   }
 
-  Future<void> _onAddNote(AddNote event, Emitter<NotesState> emit) async{
+  Future<void> _onAddNote(AddNote event, Emitter<NotesState> emit) async {
     emit(NotesLoading());
     try {
       await repository.addNote(event.title, event.content);
@@ -45,13 +47,22 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     }
   }
 
-  Future<void> _onDeleteNote(DeleteNote event, Emitter<NotesState> emit) async{
+  Future<void> _onDeleteNote(DeleteNote event, Emitter<NotesState> emit) async {
     emit(NotesLoading());
     try {
       await repository.deleteNote(event.id);
       add(LoadNotes());
     } catch (e) {
       throw Exception("Failed to Delete note - $e");
+    }
+  }
+
+  Future<void> _onShareNote(ShareNote event, Emitter<NotesState> emit) async {
+    final shareContent = '${event.title}\n\n${event.content}';
+    try {
+      await SharePlus.instance.share(ShareParams(text: shareContent));
+    } catch (e) {
+      throw Exception("Failed to share note - $e");
     }
   }
 }

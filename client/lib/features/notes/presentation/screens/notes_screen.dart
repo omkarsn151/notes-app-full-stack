@@ -135,6 +135,9 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
               Navigator.pop(context);
               showDeleteConfirmationDialog(context, note.id);
             },
+            onShare: () {
+              context.read<NotesBloc>().add(ShareNote(title: note.title, content: note.content));
+            }
           ),
     );
   }

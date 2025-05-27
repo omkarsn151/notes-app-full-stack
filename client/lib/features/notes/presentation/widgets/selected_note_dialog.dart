@@ -7,12 +7,14 @@ class NoteDetailsDialog extends StatelessWidget {
   final NotesModel note;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback onShare;
 
   const NoteDetailsDialog({
     super.key,
     required this.note,
     required this.onEdit,
     required this.onDelete,
+    required this.onShare,
   });
 
   @override
@@ -65,12 +67,28 @@ class NoteDetailsDialog extends StatelessWidget {
                       ],
                     ),
                   ),
+                  PopupMenuItem(
+                    value: 'share',
+                    child: Row(
+                      children: [
+                        Icon(Icons.share_rounded, color: AppColors.textColor),
+                        SizedBox(width: 8),
+                        CustomText(
+                          text: "Share",
+                          color: AppColors.textColor,
+                          fontSize: 18,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
             onSelected: (value) {
               if (value == 'edit') {
                 onEdit();
               } else if (value == 'delete') {
                 onDelete();
+              } else if (value == 'share') {
+                onShare();
               }
             },
           ),

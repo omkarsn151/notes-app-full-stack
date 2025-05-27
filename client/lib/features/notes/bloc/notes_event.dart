@@ -38,3 +38,12 @@ class DeleteNote extends NotesEvent {
   List<Object?> get props => [id];
 }
 
+class ShareNote extends NotesEvent {
+  final String title;
+  final String content;
+
+  const ShareNote({required this.title, required this.content});
+
+  @override
+  List<Object?> get props => [title, content];
+}
