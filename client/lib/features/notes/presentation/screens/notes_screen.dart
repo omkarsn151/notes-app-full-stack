@@ -1,4 +1,5 @@
 import 'package:client/common/app_colors.dart';
+import 'package:client/common/customSnackBar.dart';
 import 'package:client/common/custom_text.dart';
 import 'package:client/features/notes/bloc/notes_bloc.dart';
 import 'package:client/features/notes/bloc/notes_event.dart';
@@ -27,21 +28,13 @@ class _NotesScreenState extends State<NotesScreen> with NotesSelectionHelper {
     return BlocListener<NotesBloc, NotesState>(
       listener: (context, state) {
         if (state is NoteAdded) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Note added successfully!')),
-          );
+          showCustomSnackBar(context, "Note added successfully");
         } else if (state is NoteEdited) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Note edited successfully!')),
-          );
+          showCustomSnackBar(context, "Note edited successfully");
         } else if (state is NoteDeleted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Note deleted successfully!')),
-          );
+          showCustomSnackBar(context, "Note deleted successfully!");
         } else if (state is NotesError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${state.message}')),
-          );
+          showCustomSnackBar(context, "Error: ${state.message}");
         }
       },
       child: Scaffold(
