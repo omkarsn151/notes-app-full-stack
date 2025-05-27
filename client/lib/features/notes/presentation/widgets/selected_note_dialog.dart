@@ -54,20 +54,6 @@ class NoteDetailsDialog extends StatelessWidget {
                     ),
                   ),
                   PopupMenuItem(
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        Icon(Icons.delete_outline, color: AppColors.errorColor),
-                        SizedBox(width: 8),
-                        CustomText(
-                          text: "Delete",
-                          color: AppColors.errorColor,
-                          fontSize: 18,
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
                     value: 'share',
                     child: Row(
                       children: [
@@ -76,6 +62,20 @@ class NoteDetailsDialog extends StatelessWidget {
                         CustomText(
                           text: "Share",
                           color: AppColors.textColor,
+                          fontSize: 18,
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete_outline, color: AppColors.errorColor),
+                        SizedBox(width: 8),
+                        CustomText(
+                          text: "Delete",
+                          color: AppColors.errorColor,
                           fontSize: 18,
                         ),
                       ],
